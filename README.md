@@ -1,6 +1,6 @@
 # OrderFlow
 
-[![CI](https://github.com/YOUR_GITHUB_USER/OrderFlow/actions/workflows/ci.yml/badge.svg)](https://github.com/YOUR_GITHUB_USER/OrderFlow/actions/workflows/ci.yml)
+[![CI](https://github.com/gabrieldomingos07/OrderFlow/actions/workflows/ci.yml/badge.svg)](https://github.com/gabrieldomingos07/OrderFlow/actions/workflows/ci.yml)
 ![.NET 10](https://img.shields.io/badge/.NET-10-512BD4?logo=dotnet)
 ![PostgreSQL](https://img.shields.io/badge/PostgreSQL-17-4169E1?logo=postgresql&logoColor=white)
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)

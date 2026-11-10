@@ -1,0 +1,17 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.Testing" />
+    <PackageReference Include="Testcontainers.PostgreSql" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\OrderFlow.Api\OrderFlow.Api.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Using Include="System.Net" />
+    <Using Include="System.Net.Http.Json" />
+  </ItemGroup>
+
+</Project>

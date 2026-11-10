@@ -1,0 +1,75 @@
+# End-to-end walkthrough of the API.
+# Works with the Visual Studio / Rider HTTP client and the VS Code "REST Client" extension.
+# Start the API first (`docker compose up --build` or `dotnet run --project src/OrderFlow.Api`).
+
+@baseUrl = http://localhost:8080
+# When running with `dotnet run`, use: @baseUrl = http://localhost:5080
+
+### 1. Sign in as the seeded administrator (development credentials)
+# @name admin
+POST {{baseUrl}}/api/v1/auth/login
+Content-Type: application/json
+
+{
+  "email": "admin@orderflow.dev",
+  "password": "Admin@12345"
+}
+
+### 2. Create a product (admin only)
+# @name product
+POST {{baseUrl}}/api/v1/products
+Authorization: Bearer {{admin.response.body.$.accessToken}}
+Content-Type: application/json
+
+{
+  "sku": "CAM-4K-{{$randomInt 1000 999999}}",
+  "name": "4K Webcam",
+  "description": "Autofocus, dual microphones, USB-C.",
+  "price": 549.90,
+  "initialStock": 20
+}
+
+### 3. Browse the catalog (anonymous)
+GET {{baseUrl}}/api/v1/products?search=webcam&page=1&pageSize=10
+
+### 4. Register a customer — the response already contains an access token
+# @name customer
+POST {{baseUrl}}/api/v1/auth/register
+Content-Type: application/json
+
+{
+  "email": "customer-{{$randomInt 1000 999999}}@example.com",
+  "fullName": "Maria Silva",
+  "password": "Secret123"
+}
+
+### 5. Place an order
+# @name order
+POST {{baseUrl}}/api/v1/orders
+Authorization: Bearer {{customer.response.body.$.accessToken}}
+Content-Type: application/json
+
+{
+  "items": [
+    { "productId": "{{product.response.body.$.id}}", "quantity": 2 }
+  ]
+}
+
+### 6. Pay the order (simulated payment)
+POST {{baseUrl}}/api/v1/orders/{{order.response.body.$.id}}/pay
+Authorization: Bearer {{customer.response.body.$.accessToken}}
+
+### 7. Ship it (admin only)
+POST {{baseUrl}}/api/v1/orders/{{order.response.body.$.id}}/ship
+Authorization: Bearer {{admin.response.body.$.accessToken}}
+
+### 8. Deliver it (admin only)
+POST {{baseUrl}}/api/v1/orders/{{order.response.body.$.id}}/deliver
+Authorization: Bearer {{admin.response.body.$.accessToken}}
+
+### 9. The customer's order history
+GET {{baseUrl}}/api/v1/orders?status=Delivered
+Authorization: Bearer {{customer.response.body.$.accessToken}}
+
+### 10. Health checks
+GET {{baseUrl}}/health/ready

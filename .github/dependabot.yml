@@ -1,0 +1,28 @@
+version: 2
+updates:
+  - package-ecosystem: nuget
+    directory: /
+    schedule:
+      interval: weekly
+    # Moving to a new .NET major version is a deliberate upgrade, not a weekly bump.
+    ignore:
+      - dependency-name: "*"
+        update-types: ["version-update:semver-major"]
+    groups:
+      microsoft:
+        patterns: ["Microsoft.AspNetCore.*", "Microsoft.EntityFrameworkCore*", "Microsoft.Extensions.*", "Npgsql*", "EFCore.*"]
+      tests:
+        patterns: ["xunit*", "Shouldly", "NSubstitute", "Testcontainers*", "Microsoft.Testing.*"]
+
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: weekly
+
+  - package-ecosystem: docker
+    directory: /
+    schedule:
+      interval: weekly
+    ignore:
+      - dependency-name: "*"
+        update-types: ["version-update:semver-major"]
